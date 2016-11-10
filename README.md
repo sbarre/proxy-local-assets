@@ -33,6 +33,16 @@ gulp.task('build', function() {
 });
 ```
 
+### Getting Started
+
+*It is assumed that you have Node, NPM and Gulp installed at the system level.*
+
+First, install the local dependencies:
+
+```
+$ npm install
+```
+
 The Gulpfile's default task will run the BrowserSync proxy and watch the SASS folder, so all you need to get started is to run gulp:
 
 ```
