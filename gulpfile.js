@@ -8,7 +8,7 @@ var gulp = require('gulp'),
 var config = {
 
   // CHANGE THIS!
-  remoteURL: 'https://seb.rallyhavas.com/',
+  remoteURL: 'https://www.google.ca/',
 
   srcDir: './src',
   injectDir: './build',
