@@ -8,15 +8,20 @@ var gulp = require('gulp'),
 var config = {
 
   // CHANGE THIS!
-  remoteURL: 'https://www.google.ca/',
+  remoteURL: 'https://seb.rallyhavas.com/',
 
   srcDir: './src',
   injectDir: './build',
   localPath: '/local-assets',
 
-  localAssets: [
-    'css/local.css'
-  ]
+  localAssets: {
+    css: [
+      'css/local.css'
+    ],
+    js: [
+      'js/local.js'
+    ]
+  }
 
 };
 
@@ -34,26 +39,44 @@ gulp.task('sass', function() {
     .pipe(browserSync.stream());
 });
 
-gulp.task('browserSync', ['sass'], function() {
+gulp.task('js', function() {
+  return gulp.src(config.srcDir + '/js/**/*.js')
+    .pipe(gulp.dest(config.injectDir + '/js'))
+    .pipe(browserSync.stream());
+})
+
+gulp.task('browserSync', ['sass', 'js'], function() {
   browserSync.init({
     proxy: {
       target: config.remoteURL
     },
-    snippetOptions: {
-      rule: {
+    rewriteRules: [
+      {
+        // Inject Local CSS at the end of HEAD
         match: /<\/head>/i,
-        fn: function(snippet, match) {
-          localAssets = '';
-          for (i=0;i<config.localAssets.length;i++) {
-            localAssets += '<link rel="stylesheet" type="text/css" href="' + config.localPath + '/' + config.localAssets[i] + '">';
+        fn: function(req, res, match) {
+          localCssAssets = '';
+          for (i=0;i<config.localAssets.css.length;i++) {
+            localCssAssets += '<link rel="stylesheet" type="text/css" href="' + config.localPath + '/' + config.localAssets.css[i] + '">';
           }
-          return localAssets + snippet + match;
+          return localCssAssets + match;
+        }
+      },
+      {
+        // Inject Local JS at the end of BODY
+        match: /<\/body>/i,
+        fn: function(req, res, match) {
+          localJsAssets = '';
+          for (i=0;i<config.localAssets.js.length;i++) {
+            localJsAssets += '<script src="' + config.localPath + '/' + config.localAssets.js[i] + '"></script>';
+          }
+          return localJsAssets + match;
         }
       }
-    },
+    ],
     serveStatic: [{
-      route: config.localPath + '/css',
-      dir: config.injectDir + '/css'
+      route: config.localPath,
+      dir: config.injectDir
     }],
     watchTask: true
   });
@@ -61,11 +84,14 @@ gulp.task('browserSync', ['sass'], function() {
 
 gulp.task('watch', ['browserSync', 'sass'], function() {
   gulp.watch(config.srcDir + '/scss/**/*.scss', ['sass']);
+  gulp.watch(config.srcDir + '/js/**/*.js', ['js']);
 });
 
 gulp.task('build', function() {
   runSequence([
-    'sass'
+    'clean',
+    'sass',
+    'js'
   ]);
 });
 
