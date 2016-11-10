@@ -82,7 +82,7 @@ gulp.task('browserSync', ['sass', 'js'], function() {
   });
 });
 
-gulp.task('watch', ['browserSync', 'sass'], function() {
+gulp.task('watch', ['browserSync', 'js', 'sass'], function() {
   gulp.watch(config.srcDir + '/scss/**/*.scss', ['sass']);
   gulp.watch(config.srcDir + '/js/**/*.js', ['js']);
 });
