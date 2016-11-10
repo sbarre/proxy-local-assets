@@ -6,7 +6,7 @@ This can be used to do effective local CSS development on a remote site that you
 
 At the top of the file is a configuration array that can be adjusted to suit your needs.  At minimum you should update the `remoteURL` value:
 
-```
+```javascript
 var config = {
   remoteURL: 'https://www.google.ca/',  // CHANGE THIS!
   srcDir: './src',
@@ -18,13 +18,13 @@ var config = {
 };
 ```
 
-You can also include additional CSS files in the `config.localAssets` property which would mapp to SASS files in the `src/scss` folder.
+You can also include additional CSS files in the `config.localAssets` property which would map to SASS files in the `src/scss` folder.
 
 The Gulpfile includes a basic SASS-based example build process, but it can be easily extended to use LESS or other tools as required, as long as they ultimately result in a file being output to your `config.injectDir` folder and that file is referenced in the `config.localAssets` property.
 
 You can add additional tasks to the `build` task without changing anything else:
 
-```
+```javascript
 gulp.task('build', function() {
   runSequence([
     // Add tasks here
