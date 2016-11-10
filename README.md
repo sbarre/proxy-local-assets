@@ -4,7 +4,7 @@
 
 This is a simple BrowserSync-based Gulpfile that proxies a remote site locally and injects one or more specified local CSS and JS files, watches for changes to those local files and automatically refreshes your browser as you code.
 
-This can be used to improve your local development workflow when working on a remote site that you may not be able to run locally (for any number of reasons).
+This can be used to improve your local development workflow when working on a remote site that you may not be able to run locally (for any number of reasons), and avoids the painfully inefficient *"Make local changes, upload your changes, refresh remote server, verify, repeat"* loop.
 
 At the top of the file is a configuration array that can be adjusted to suit your needs.  At minimum you should update the `remoteURL` value:
 
