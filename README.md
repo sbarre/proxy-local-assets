@@ -1,6 +1,6 @@
 # Proxy Local Assets
 
-**Have you ever been asked to make CSS or JS changes to a live website?  If so, you know how much of a pain in the ass it can be.**
+**Have you ever been asked to make CSS or JS changes to a live website that you have no back-end access to?  If so, you know how much of a pain in the ass it can be.**
 
 This is a simple BrowserSync-based Gulpfile that proxies a remote site locally and injects one or more specified local CSS and JS files, watches for changes to those local files and automatically refreshes your browser as you code.
 
