@@ -8,7 +8,9 @@ This can be used to improve your local development workflow when working on a re
 
 Do all your CSS & JS work locally, see it applied immediately to the remote server (within reason), and upload or deliver all your tested changes at once.
 
-At the top of the file is a configuration array that can be adjusted to suit your needs.  At minimum you should update the `remoteURL` value:
+### How it works
+
+At the top of the Gulpfile is a configuration array that can be adjusted to suit your needs.  At minimum you should update the `remoteURL` value:
 
 ```javascript
 var config = {
@@ -33,7 +35,7 @@ The Gulpfile includes a basic SASS-based example build process, but it can be ea
 
 For this example, Javascript files are copied directly from `src/js` to your `config.injectDir` folder without any modifications.
 
-You can add additional tasks to the `build` task without changing anything else:
+You can add additional tasks to the aggregating `build` task without changing anything else (such as image or font copying etc):
 
 ```javascript
 gulp.task('build', function() {
