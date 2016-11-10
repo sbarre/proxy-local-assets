@@ -6,6 +6,8 @@ This is a simple BrowserSync-based Gulpfile that proxies a remote site locally a
 
 This can be used to improve your local development workflow when working on a remote site that you may not be able to run locally (for any number of reasons), and avoids the painfully inefficient *"Make local changes, upload your changes, refresh remote server, verify, repeat"* loop.
 
+Do all your CSS & JS work locally, see it applied immediately to the remote server (within reason), and upload or deliver all your tested changes at once.
+
 At the top of the file is a configuration array that can be adjusted to suit your needs.  At minimum you should update the `remoteURL` value:
 
 ```javascript
