@@ -9,7 +9,7 @@ var gulp = require("gulp"),
 var config = {
 
 	// CHANGE THIS!
-	remoteURL: "https://seb.rallyhavas.com/",
+	remoteURL: "https://www.google.ca/",
 
 	srcDir: "./src",
 	injectDir: "./build",
@@ -36,6 +36,11 @@ gulp.task("sass", function() {
 		.pipe(autoprefixer())
 		.pipe(gulp.dest(config.injectDir + "/css"))
 		.pipe(browserSync.stream());
+});
+
+gulp.task('images', function() {
+	return gulp.src(config.srcDir + '/img/**/*')
+		.pipe(gulp.dest(config.injectDir + '/img'))
 });
 
 gulp.task("js", function() {
@@ -94,8 +99,9 @@ gulp.task("browserSync", ["sass", "js"], function() {
 	});
 });
 
-gulp.task("watch", ["browserSync", "js", "sass"], function() {
+gulp.task("watch", ["browserSync", "js", "images", "sass"], function() {
 	gulp.watch(config.srcDir + "/scss/**/*.scss", ["sass"]);
+	gulp.watch(config.srcDir + "/img/**/*", ["images"]);
 	gulp.watch(config.srcDir + "/js/**/*.js", ["js"]);
 });
 
@@ -103,7 +109,8 @@ gulp.task("build", function() {
 	runSequence([
 		"clean",
 		"sass",
-		"js"
+		"js",
+		"images"
 	]);
 });
 

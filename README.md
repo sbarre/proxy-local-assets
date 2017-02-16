@@ -20,27 +20,28 @@ var config = {
   localPath: '/local-assets',
   localAssets: {
     css: [
-      'css/local.css'
+      'css/**/*.css'
     ],
     js: [
-      'js/local.js'
+      'js/**/*.js'
     ]
   }
 };
 ```
 
-You can also include additional CSS & JS files in the `config.localAssets` property which would map to SASS files in the `src/scss` folder and JS files in the `src/js` folder.
+All CSS & JS files in the `config.localAssets` properties, which would map to SASS files in the `src/scss` folder and JS files in the `src/js` folder, will be injected into the page.
 
-The Gulpfile includes a basic SASS-based example build process, but it can be easily extended to use LESS or other tools as required, as long as they ultimately result in a file being output to your `config.injectDir` folder and that file is referenced in the `config.localAssets.css` property.
+The Gulpfile includes a basic SASS-based example build process, but it can be easily extended to use LESS or other tools as required, as long as they ultimately result in a file being output to your `config.injectDir` folder.
 
 For this example, Javascript files are copied directly from `src/js` to your `config.injectDir` folder without any modifications.
 
-You can add additional tasks to the aggregating `build` task without changing anything else (such as image or font copying etc):
+You can add additional tasks to the aggregating `build` task without changing anything else (such as font copying, minification, compression, etc):
 
 ```javascript
 gulp.task('build', function() {
   runSequence([
     'sass',
+    'images',
     'js'
     // Add tasks here
   ]);
@@ -65,3 +66,8 @@ $ gulp
 
 That's it!  This has not been super-duper tested, but it works for me.
 
+### Known limitations
+
+Since we are proxying a live site, this script cannot currently modify the page source HTML.  However, if you include images in your
+local SCSS, as long as the image url() starts with `config.localPath + '/img'` (or whatever folder you create in the `src` folder),
+they will be injected as well.  See the example in the `local.scss` file for a local image injection.
