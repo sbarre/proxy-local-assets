@@ -68,6 +68,13 @@ That's it!  This has not been super-duper tested, but it works for me.
 
 ### Known limitations
 
-Since we are proxying a live site, this script cannot currently modify the page source HTML.  However, if you include images in your
-local SCSS, as long as the image url() starts with `config.localPath + '/img'` (or whatever folder you create in the `src` folder),
+Since this script proxyies an existing site, it cannot currently modify the page source, only inject things into it (currently in very specific locations).
+So you cannot, for example, add new markup to the DOM or insert/change existing images on the page.
+
+However, if you include images in your local SCSS, as long as the image url() starts with `config.localPath + '/img'` (or whatever folder you create in the `src` folder),
 they will be injected as well.  See the example in the `local.scss` file for a local image injection.
+
+### Future features
+
+* Dynamically replace in-page assets (images, videos, etc) with local assets, if they exist
+* Override specific DOM elements with local partials
