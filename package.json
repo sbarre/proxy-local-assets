@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "BrowserSync-based Gulpfile to inject local development assets into a remote site",
   "main": "index.js",
+  "repository": "https://github.com/sbarre/proxy-local-assets.git",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +19,7 @@
   "devDependencies": {
     "browser-sync": "^2.17.5",
     "del": "^2.2.2",
+    "glob": "^7.1.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-sass": "^2.3.2",

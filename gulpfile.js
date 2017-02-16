@@ -3,12 +3,13 @@ var gulp = require("gulp"),
 	browserSync = require("browser-sync").create(),
 	runSequence = require("run-sequence"),
 	del = require("del"),
+	glob = require("glob"),
 	autoprefixer = require("gulp-autoprefixer");
 
 var config = {
 
-  // CHANGE THIS!
-	remoteURL: "https://www.google.ca/",
+	// CHANGE THIS!
+	remoteURL: "https://seb.rallyhavas.com/",
 
 	srcDir: "./src",
 	injectDir: "./build",
@@ -16,10 +17,10 @@ var config = {
 
 	localAssets: {
 		css: [
-			"css/local.css"
+			"css/**/*.css"
 		],
 		js: [
-			"js/local.js"
+			"js/**/*.js"
 		]
 	}
 
@@ -31,16 +32,16 @@ gulp.task("clean", function() {
 
 gulp.task("sass", function() {
 	return gulp.src(config.srcDir + "/scss/**/*.scss")
-    .pipe(sass().on("error", sass.logError))
-    .pipe(autoprefixer())
-    .pipe(gulp.dest(config.injectDir + "/css"))
-    .pipe(browserSync.stream());
+		.pipe(sass().on("error", sass.logError))
+		.pipe(autoprefixer())
+		.pipe(gulp.dest(config.injectDir + "/css"))
+		.pipe(browserSync.stream());
 });
 
 gulp.task("js", function() {
 	return gulp.src(config.srcDir + "/js/**/*.js")
-    .pipe(gulp.dest(config.injectDir + "/js"))
-    .pipe(browserSync.stream());
+		.pipe(gulp.dest(config.injectDir + "/js"))
+		.pipe(browserSync.stream());
 });
 
 gulp.task("browserSync", ["sass", "js"], function() {
@@ -48,30 +49,43 @@ gulp.task("browserSync", ["sass", "js"], function() {
 		proxy: {
 			target: config.remoteURL
 		},
-		rewriteRules: [
-			{
-        // Inject Local CSS at the end of HEAD
-				match: /<\/head>/i,
-				fn: function(req, res, match) {
-					var localCssAssets = "";
-					for (var i=0;i<config.localAssets.css.length;i++) {
-						localCssAssets += "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + config.localPath + "/" + config.localAssets.css[i] + "\">";
+		rewriteRules: [{
+			// Inject Local CSS at the end of HEAD
+			match: /<\/head>/i,
+			fn: function(req, res, match) {
+				var localCssAssets = "";
+				for (var i = 0; i < config.localAssets.css.length; i++) {
+
+					var files = glob.sync(config.localAssets.css[i], {
+						cwd: config.injectDir
+					});
+
+					for (var file in files) {
+						localCssAssets += "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + config.localPath + "/" + files[file] + "\">";
 					}
-					return localCssAssets + match;
 				}
-			},
-			{
-        // Inject Local JS at the end of BODY
-				match: /<\/body>/i,
-				fn: function(req, res, match) {
-					var localJsAssets = "";
-					for (var i=0;i<config.localAssets.js.length;i++) {
-						localJsAssets += "<script src=\"" + config.localPath + "/" + config.localAssets.js[i] + "\"></script>";
-					}
-					return localJsAssets + match;
-				}
+
+				return localCssAssets + match;
 			}
-		],
+		}, {
+			// Inject Local JS at the end of BODY
+			match: /<\/body>/i,
+			fn: function(req, res, match) {
+				var localJsAssets = "";
+				for (var i = 0; i < config.localAssets.js.length; i++) {
+
+					var files = glob.sync(config.localAssets.js[i], {
+						cwd: config.injectDir
+					});
+
+					for (var file in files) {
+						localJsAssets += "<script src=\"" + config.localPath + "/" + files[file] + "\"></script>";
+					}
+				}
+
+				return localJsAssets + match;
+			}
+		}],
 		serveStatic: [{
 			route: config.localPath,
 			dir: config.injectDir
